@@ -142,11 +142,30 @@
   하둡 파일시스템의 기본 정보 및 통계를 보여줌  
 - HDFS에 저장된 파일을 로컬 파일시스템으로 가져오기    
   `hdfs dfs -get /tmp/Sample2.txt`  
-  그럼 로컬의 /home/pilot-pjt/ 디렉터리에 Sample2.txt 파일이 생성  
+  그럼 로컬의 `/home/pilot-pjt/` 디렉터리에 Sample2.txt 파일이 생성  
 - HDFS의 저장한 파일 삭제(휴지통)  
   `hdfs dfs -rm /tmp/Sample2.txt`  
   삭제 명령 실행시, 휴지통에 임시 삭제되며, 복구가 가능  
   휴지통으로 임시 삭제된 파일은 특정 시간(24시간, CDH 기준)이 지나면 자동으로 완전 삭제됨. 휴지통에 임시 삭제가 필요 없을 때는 -skipTrash 옵션 이용
+
+#### HDFS 파일의 비정상 상태
+- HDFS 점검 명령을 실행할 때 하둡의 파일시스템에 문제가 발생할 경우 "CORRUPT FILES", "MISSING BLOCKS", "MISSING SIZE", "CORRUPT BLOCKS" 등의 항목에 숫자가 표기됨
+- 이 같은 상태가 지속되면 하둡은 물론 HBase, Hive 등에 부분적인 장애가 발생할 수 있음
+- 강제 셧다운이 빈번하고 리소스가 부족한 테스트 환경에서 자주 발생할 수 있는 현상임
+- 원래 HDFS는 비정상적인 파일 블록을 발견할 경우 다른 노드에 복구하려고 시도함
+- 다음과 같이 사용자가 직접 삭제/이동 명령으로 조치할 수 있음
+- 안전 모드 상태로 전환됐다면 강제로 안전 모드를 해제한다  
+  `hdfs dfsadmin -safemode leave`
+- 손상된 파일들(missing block, corrupt block)이 발생한다면, 특정 서버에 파일이 깨졌을 경우, 자동으로 복제를 해서 복구를 함
+- 둘 다 복구가 불가한 경우는 손상된 파일을 삭제할 수 있음  
+  손상된 파일을 강제로 삭제하는 명령어는 다음과 같음  
+  `hdfs fsck -delete`
+- 복구 중 일수도 있으므로, 바로 삭제하는 것은 위험할 수도 있으므로, 손상된 파일을 /lost + found 디렉터리로 옮길 수도 있음  
+`hdfs fsck / -move`
+
+### 주키퍼 명령어 사용해보기
+- PuTTY 프로그램 실행
+- Server2에 root 계정으로 SSH 접속
 
 
 ## 용어
