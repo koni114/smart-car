@@ -138,6 +138,7 @@
 - HDFS의 파일 시스템 상태 검사  
   `hdfs fsck /`  
   전체 크기, 디렉터리 수, 파일 수, 노드 수 등 파일 시스템의 전체 상태를 보여줌  
+  주로 봐야할 것은 Missing block 이 있는지, Corrupt block 이 있는지 확인
   `hdfs dfsadmin -report`  
   하둡 파일시스템의 기본 정보 및 통계를 보여줌  
 - HDFS에 저장된 파일을 로컬 파일시스템으로 가져오기    
@@ -166,9 +167,19 @@
 ### 주키퍼 명령어 사용해보기
 - PuTTY 프로그램 실행
 - Server2에 root 계정으로 SSH 접속
+- zookeeper-client 실행
+- Server2에 root 계정으로 로그인한 후 다음 명령 실행  
+  `zookeeper-client`   
+- 주키퍼 Z노트 등록/조회/삭제
+  - 주키퍼의 Z노트 생성과 조회, 삭제가 정상적으로 수행되는지 확인 
+  - `create /pilot-pjt bigdata`
+  - `ls /`
+  - `get /pilot-pjt`
+  - `delete /pilot-pjt`
 
 
 ## 용어
 - 에이전트
   - 작업을 대신해주는 프로그램이라고 생각하면 됨
   - 인공지능 분야의 사람들은 에이전트를 분산 환경에서 작업을 수행하는 지적인 특성을 갖는 응용 프로그램이라고 함
+  
