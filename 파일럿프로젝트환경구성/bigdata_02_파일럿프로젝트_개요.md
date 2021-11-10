@@ -60,7 +60,7 @@
 - 데이터 구분자 : 콤마(,)
 - 데이터 스키마 : 발생일시, 로그발생일시, 차량번호, 차량고유번호, 가속패달, 가속패달이벤트, 브레이크패달, 브레이크패달이벤트, 운전대 회전각, 운전대 회전 이벤트
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_2.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_2.png)
 
 ### 데이터셋
 - 스마트카 상태 정보 데이터셋

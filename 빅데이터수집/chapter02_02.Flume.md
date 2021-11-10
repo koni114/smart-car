@@ -22,12 +22,12 @@
 
 ### 플럼 아키텍처
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_12.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_12.png)
 
 - Flume 은 Source와 Sink로 구성되며, 이를 연결하는 channel로 구성
 - 아주 기본적인 Flume 의 데이터 파이프라인
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_13.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_13.png)
 
 - 플럼을 Source, Channel, Sink을 어떻게 구성하느냐에 따라서 아키텍처가 바뀜
 - Sink를 여러개 구성하여 병렬로 구성하기도 함
@@ -36,20 +36,20 @@
 - 이러한 전체를 하나의 에이전트라고 함
 - 하나의 에이전트 안에 여러개의 파이프라인 구성 가능
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_14.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_14.png)
 
 - 병렬로 구성한 아키텍처. 데이터 유형별로 나눠서 처리하게끔 하는 경우
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_15.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_15.png)
 
 - Tier 1에서 대규모 데이터를 처리할 수 있는 구조로 만들고, Tier 2 에서는 비즈니스적으로 복합적인 처리가 필요할 때 가져갈 수 있는 아키텍처
 
 ### 플럼 활용 방안
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_16.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_16.png)
 
 - 플럼 활용 방안1
   - CarLogMain.java 시뮬레이터는 3초 간격으로 데이터가 발생하는데, 이러한 데이터를 1일 단위로 파일로 적재한 후, 이러한 파일을 Flume 을 통해 하둡에 적재할 때 활용 
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_17.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_17.png)
 - 플럼 활용 방안2
 - 발생한 순간 바로 수집.(실시간 분석 활용)

@@ -78,7 +78,7 @@
 - 빅데이터의 실제 하드웨어와 소프트웨어의 아키텍처 구성이 어떻게 되는지 알아보자
 - 15대 정도로 구성된 소규모 BigData 구성도 아키텍처 확인
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_10.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_10.png)
 
 - 5대로 구성된 수집/적재 영역
 - 3대로 구성된 하둡 클러스터의 관리 노드(NameNode, HBase Master.. 등이 2중 3중화 되어 있음)
@@ -87,7 +87,7 @@
   DataNode(HDFS), 관리를 위해 Node Manager가 있는 것임
 - 2대의 Nutch 와 Solr 를 통해 외부 분산 크롤링
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_11.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_11.png)
 
 - 하나의 렉 서버 안에 서버들을 모두 다 꽂아놓고, server 10대 배치
 - 통신을 위한 네트워크 스위치 10G 배치(Public/Private)
@@ -96,7 +96,7 @@
 - 수집/크롤링 시스템은 물리적 네트워크 존이 다른데 있음
 - 기존에 있던 ETL Tool과 연결도 되며, Web/WAS 처럼 업무 시스템과도 연결됨
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_12.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_12.png)
 
 #### 중간급 규모의 아키텍처
 - Data Node가 빅데이터 시스템의 규모를 나타낸다라고 볼 수 있음

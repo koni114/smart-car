@@ -5,7 +5,7 @@
 
 ### 소프트웨어 아키텍처 -> 수집 레이어
 
-![img](https://github.com/koni114/smart-car/blob/master/smart-car/img/smart_car_4.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_4.png)
 
 - 원천 데이터의 유형에 따라 플럼을 통해 수집하고 적재하는 방식이 달라짐
 - 스마트카 상태 정보(100MB 이상의 Batch data)데이터는 바로 hadoop 으로 적재
@@ -14,7 +14,7 @@
 
 ### 소프트웨어 아키텍처 -> 적재 레이어
 
-![img](https://github.com/koni114/smart-car/blob/master/smart-car/img/smart_car_5.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_5.png)
 
 - 수집 영역인 플럼과 스톰이 수집한 데이터를 Hadoop, HBase, redis 에 저장
 - 대용량 batch data 는 hadoop, 실시간 성 메세지 데이터는 HBase 와 redis 에 저장함
@@ -25,14 +25,14 @@
 
 ### 소프트웨어 아키텍처 -> 처리/탐색 레이어
 
-![img](https://github.com/koni114/smart-car/blob/master/smart-car/img/smart_car_6.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_6.png)
 
 - Hadoop, HBase, Redis 에 저장된 데이터를 통해 DW 와 Data Mart를 편성할 것임
 - DW 와 Mart 편성하는 작업은 자동화 해야하는데, 이때 Hue, Hive, Spark, Oozie 를 활용하게 됨
 - 분석 주제 영역들이 만들어지게 되고, 주제마다 분석으로 활용됨
 
 ### 소프트웨어 아키텍처 -> 분석/응용 영역
-![img](https://github.com/koni114/smart-car/blob/master/smart-car/img/smart_car_7.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_7.png)
 
 - 다양한 분석 도구를 통해 EDA, AL/ML 분석 진행
 - 머하웃/SparkML는 직접 Hadoop에 분산 클러스터를 만들어서 진행함
@@ -46,9 +46,9 @@
 
 ### 하드웨어 아키텍처 > 파일럿 PC 구성도
 
-![img](https://github.com/koni114/smart-car/blob/master/smart-car/img/smart_car_8.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_8.png)
 
-![img](https://github.com/koni114/smart-carIL/blob/master/smart-car/img/smart_car_9.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_9.png)
 
 - CM 을 통해 각각 서버마다 hadoop ecosystem 들을 설치
 - BigData 시스템이 가상 분산 노드로 가상환경으로 만들어지면 PC 개발 도구환경에서 각각의 서버에 접속해 BigData / AI 작업을 진행

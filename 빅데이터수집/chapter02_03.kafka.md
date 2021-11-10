@@ -16,17 +16,17 @@
 - Consumer
   - Broker의 특정 Topic에서 데이터를 수신하는 역할로서 애플리케이션에서 카프카 라이브러리를 이용해 구현 
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_18.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_18.png)
 
 - Single Broker On Single Node 
 - 카프카 아키텍처는 업무 도메인이 단순할 때 많이 사용. 
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_19.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_19.png)
 
 - Multi Broker On Single Node
 - 카프카 서버가 한대이므로, 대규모 발행 소비 요건을 커버하기는 어렵지만, 업무의 복잡한 요건을 수행할 때 사용
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_20.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_20.png)
 
 - 가장 많이 사용되는 카프카 아키텍처
 - 물리적인 노드가 2대가 있고, 안에 여러개의 broker 들을 만들어 둠
@@ -35,19 +35,19 @@
 - Consumer 입장에서는 여러 군데에서 빼오는 것이 좋기 때문에 Consumer도 여러 개를 구성함
 
 ### 카프카 활용 방안
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_21.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_21.png)
 
 - 플럼에 저장한 데이터를 바로 하둡에 저장하는 것이 아니라, 카프카에 전송함
 - 카프카에 저장된 데이터는 별도의 transaction 관리가 돼서 최종 하둡에 안정적으로 저장이 될 수 있도록 함
 - 도중에 실패한 메세지는 롤백해 다시 데이터를 전송받기 등을 수행함 
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_22.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_22.png)
 
 - 카프카가 없는 경우의 아키텍처에 해당함
 - 만약 카프카가 없는 상태에서 HBase 에 장애가 발생하면 플럼에 쌓이는데, 플럼에 버퍼 기능이 있기는 하지만, size가 그렇게 크지 않음
 - 이렇게 되면 플럼에 2차 장애가 발생할 수 있음. HBase와 Flume 사이에 카프카를 두어야 함 
 
-![img](https://github.com/koni114/TIL/blob/master/smart-car/img/smart_car_23.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_23.png)
 
 - Hbase 가 발생하였더라도 kafka에 2시간 동안 담아두고, 장애 복구가 되는 시점에 kafka에 적재된 데이터를 HBase에 저장
 - kafka는 다양한 서비스에 활용됨. 특히 분산 임시 저장소가 필요할 때 많이 사용됨
