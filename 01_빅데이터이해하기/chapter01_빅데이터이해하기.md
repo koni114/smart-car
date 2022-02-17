@@ -28,6 +28,8 @@
 ### 빅데이터 구현기술
 - 수집, 적재, 처리/탐색, 분석/응용으로 구성
 
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_24.png)
+
 #### 수집
 - Crawling, FTP, Open API, RSS, Log Aggregation, DB Aggregation, Streaming
 - Volume, Variety, Velocity 측면 중요
@@ -69,18 +71,31 @@
 - Reporting
 - Business Visualization
 
-## 빅데이터 보안
-### 접근제어 보안
-- 접근제어를 위해 ID와 Password 를 관리하는 인증관리자와 권한 관리자가 필요
-- 빅데이터 저장소인 하둡은 인증관리와 권한관리가 다소 취약함
-- 하둡에 저장되어 있는 개인정보 등을 여러 사용자에게 관리하기 위해 3rd party 제품을 사용함
-- apache knox, sentry, apache ranger, 커베로스 등이 있음
+### 빅데이터 보안 - 접근제어 보안
+- ID/Password 를 통한 인증 관리와 인증된 계정별 권한 관리가 별도로 필요함
+- Hadoop은 인증관리와 권한관리가 다소 취약함
+- 하둡 내에 존재하는 개인정보, 거래정보, 행동이력 등을 다양한 사용자와 시스템들에게 제공하기 위해서 3rd-party 제품인 접근 제어 기술을 적용
 
-#### apache knox
-#### sentry
-#### apache Ranger
-- 중앙에서 통합 관리
-- centry 와 거의 유사한데, 시스템 내부 깊숙히 관여하는 플러그인이 설치됨
-#### 커베로스
-- 티켓을 통해 접근 제어를 진행함
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_25.png)
+- Apache KNOX
+  - 네트워크 방화벽 구간인 DMZ에 설치를 함
+  - 클라이언트와 하둡 에코시스템이 직접 접근하지 못하도록 하고, apache KNOX 를 통해 접근할 수 있도록 함
+  - LDAP과 KDC에서 계정과 권한 정보를 받아 client와 Hadoop ecosystem의 중간다리 역할을 수행
+
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_26.png)
+- Sentry
+  - 중앙에 sentry 서버를 두게됨
+  - 계정과 권한을 관리하는 Policy MetaStore에서 계정과 권한 관리 수행
+  - Impala, Hive, hadoop name-node와 같은 주변 노드 시스템들에게 centry-agent를 설치하여 중앙의 sentry 서버의 계정 정보와 권한 관리 정보를 활용할 수 있게끔 하는 아키텍처를 구성함
+
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_27.png)
+- ranger
+  - 중앙에 apache ranger를 두고, 계정 및 권한 관리를 수행하는 policy database 가 있음 
+  - hadoop-ecosystem 에 좀 더 깊숙이 관여하는 ranger plugin 있음
+  - sentry와 유사
+
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_28.png)
+- Kerberos
+  - key distribution center라고 하는 시스템으로 불리기도 함
+  - key distribution center에는 인증 서버와 티켓 발행 서버가 있는데, 하둡 클라이언트는 KDC 에서 티켓을 획득하고 이를 기반으로 하둡 파일 시스템에 접근하게 되는 개념
 
