@@ -42,13 +42,24 @@
 - 하드웨어 아키텍처 -> 3V 관점
 - 서버, 네트워크, 디스크, RAM 등을 3V 관점에서 접근하여 설계해야함
 - Volume, Velocity, Variety 관점에서 설계해야 함
-- 고사양 PC는 가상 서버 3대로 진행
+- 파일럿 환경
+  - 저사양 PC
+    - CPU: 듀얼코어 이상
+    - 메모리: 8GB 이상
+    - 디스크: 90GB 이상
+    - 디스크 SSD 권장 
+  - 고사양 PC
+    - CPU: i5 이상   
+    - 메모리: 16GB 이상
+    - 디스크: 120GB 이상
+    - 디스크 SSD 권장
+- 고사양은 3대의 서버, 저사양은 2대의 서버로 파일럿 프로젝트를 구성
+- 서버나 노드의 개수가 적어질수록 병목현상이 발생할 수 있음
+
 
 ### 하드웨어 아키텍처 > 파일럿 PC 구성도
-
 ![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_8.png)
 
 ![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_9.png)
-
 - CM 을 통해 각각 서버마다 hadoop ecosystem 들을 설치
 - BigData 시스템이 가상 분산 노드로 가상환경으로 만들어지면 PC 개발 도구환경에서 각각의 서버에 접속해 BigData / AI 작업을 진행
