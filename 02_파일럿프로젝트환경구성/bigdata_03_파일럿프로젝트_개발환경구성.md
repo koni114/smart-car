@@ -345,6 +345,7 @@ $ hostname
 - 파일럿 프로젝트에서는 클라우데라의 CM을 이용
 
 
+
 ## 용어 정리
 - NAT
   - 네트워크 주소 변환(Network Address translation, NAT)
