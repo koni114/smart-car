@@ -1,4 +1,67 @@
 # 클러스터 환경 구성
+## 빅데이터 클러스터 구성 1 - 클라우데라 매니져 설치
+- 클라우데라 매니저는 하둡을 포함하여 여러 프레임워크 등을 설치, 관리, 모니터링 할 수 있는 기능을 제공
+
+### CM의 주요 기능 설명
+- 프로비저닝 : 하둡 에코시스템을 설치, 삭제, 수정 관리
+- 매니지먼트 : 설치한 에코시스템의 설정 변경 및 최적화 지원 
+- 모니터링 : 하드웨어 리소스 및 설치 컴포넌트의 상태 모니터링/대시보드
+
+### Cloudera Manager 설치 방법
+- SSH를 통해 Server01에 root 또는 root 권한을 가진 계정으로 접속
+- CM 6.3.1 의 설치 정보가 있는 레포파일을 다운로드 한 후 수정/적용하고 JDK 1.8까지 설치
+~~~shell
+$ cd /root
+$ wget https://archive.cloudera.com/cm6/6.3.1/redhat6/yum/cloudera-manager.repo
+~~~
+- 다운로드한 cloudera-manager.repo 파일을 yum의 리포지토리 경로로 이동
+~~~shell
+$ mv /root/cloudera-manager.repo /etc/yum.repos.d/
+~~~
+- CM 데몬과 서버를 설치. 그 전에 JDK 1.8을 설치  
+  yum으로 JDK1.8 설치. 설치 중 표시되는 질문에는 모두 yes를 선택
+~~~shell
+$ yum install oracle-j2sdk1.8
+~~~
+- JDK 설치가 완료되면 이제 CM을 설치함
+~~~shell
+$ yum install cloudera-manager-daemons cloudera-manager-server
+~~~
+- CM 데몬과 서버를 설치하는 중에 표시되는 질문에는 모두 yes를 선택  
+  설치가 완료되기까지는 네트워크 상황에 따라 10분 ~ 30여 분 정도 걸림
+- CM 내부에서 사용하는 DB를 설치. 다음 명령으로 PostgreSQL을 설치하고 서비스 시작
+~~~shell
+$ yum install cloudera-manager-server-db-2
+$ service cloudera-scm-server-db start
+~~~
+- 서비스 기동이 완료되면 PostgreSQL 서버의 원격 접근 제한을 다음 절차를 통해 해제  
+  vi 명령으로 PostgreSQL의 `pg_hba.conf` 파일을 열어 다음의 정보를 수정 
+~~~shell
+$ vi /var/lib/cloudera-scm-server-db/data/pg_hba.conf
+~~~
+- 먼저 81번째 줄(마지막 3번째 줄)에서 "reject"를 "md5"로 변경  
+  - 변경 전: `host all cloudera-scm,scm 0.0.0.0/0 reject`
+  - 변경 후: `host all cloudera-scm,scm 0.0.0.0/0 md5`
+- 두 번째로 마지막 줄에 아래 내용을 추가해 PostgreSQL에 모든 접근을 허용
+~~~shell
+host all all 0.0.0.0/0 trust
+~~~
+- 변경된 설정을 반영하기 위해 DB를 재기동함
+~~~shell
+$ service cloudera-scm-server-db restart
+~~~
+- 아래 명령을 통해 CM 서버를 시작하고 상태를 확인해본다. 개인의 파일럿 PC 환경에 따라 기동 시간이 오래 소요될 수 있음
+~~~shell
+$ service cloudera-scm-server start
+$ service cloudera-scm-server status
+~~~
+- `cloudera-scm-server is running...`  메세지가 표시되면 정상적으로 구동된 것임
+- 하둡 배포판
+  - 오픈소스로 공개되어 있는 하둡을 기반으로 특정 기업 또는 조직이 커스터마이징해서 만들어낸 독자적인 하둡 패키지를 의미
+  - 전 세계적으로 가장 유명한 배포판은 클라우데라사의 CDH와 호튼웍스사의 HDP 가 있음
+  - 이 책의 파일럿 프로젝트에서는 CM을 이용해 하둡을 설치하므로 CDH 배포판에 포한된 하둡을 설치 및 이용 
+
+
 ## 하둡, 주키퍼 기본구성
 - Cloudera Manager 를 활용하여 하둡과 주키퍼 설치해보기
 
@@ -80,7 +143,9 @@
 - 하둡은 기본적으로 3 replicaSet 임
 - pilot project 에서는 1개만 setting 하기로 함
 - `HDFS` -> `configuration` -> `dfs.replication` 검색 후 1로 변경
-- 복제의 이유는 1. 특정 서버에 장애가 나더라도 복제해둔 다른 데이터를 통해 안정적으로 서비스가 가능함 2. 적은 여러개의 데이터를 여러개의 서버에서 병렬로 읽어들이면 더 빠르기 때문 
+- 복제의 이유
+  - 특정 서버에 장애가 나더라도 복제해둔 다른 데이터를 통해 안정적으로 서비스가 가능함  
+  - 적은 여러개의 데이터를 여러개의 서버에서 병렬로 읽어들이면 더 빠르기 때문 
 - HDFS 접근 권한 해제
   - 하둡의 자체적인 access 제어
   - apache range 등을 통해 접근 제어 가능함 
@@ -139,7 +204,7 @@
   `hdfs fsck /`  
   전체 크기, 디렉터리 수, 파일 수, 노드 수 등 파일 시스템의 전체 상태를 보여줌  
   주로 봐야할 것은 Missing block 이 있는지, Corrupt block 이 있는지 확인
-  `hdfs dfsadmin -report`  
+  `hdfs dfsadmin -report`     
   하둡 파일시스템의 기본 정보 및 통계를 보여줌  
 - HDFS에 저장된 파일을 로컬 파일시스템으로 가져오기    
   `hdfs dfs -get /tmp/Sample2.txt`  
@@ -178,8 +243,22 @@
   - `delete /pilot-pjt`
 
 
+
 ## 용어
 - 에이전트
   - 작업을 대신해주는 프로그램이라고 생각하면 됨
   - 인공지능 분야의 사람들은 에이전트를 분산 환경에서 작업을 수행하는 지적인 특성을 갖는 응용 프로그램이라고 함
-  
+- 프로비저닝  
+  - IT 인프라를 설정하는 프로세스
+  - 어떤 종류의 서비스든 사용자의 요구에 맞게 시스템 자체를 제공하는 것
+- namenode
+  - hdfs 에서의 mater 역할. hdfs에 있는 데이터를 datanode에 분산시키고 관리하는 기능 담당
+- hadoop balancer
+  - 블록을 재분재하기 위해 사용률이 높은 데이터노드의 블록을 사용률이 낮은 데이터노드로 옮기는 하둡 데몬
+  - 각 데이터노드의 사용률 / 클러스터의 사용률을 비교하여 지정된 임계치 비율 이내일 때를 균형 상태라고 함
+  - 시간이 지날수록, data-node 마다의 데이터 불균형이 발생할 수 있음
+  - 불균형 상태의 클러스터는 map-reduce의 locality에 영향을 받게되며, 자주 사용되는 데이터노드에 큰 부하를 주게됨
+- HttpFS
+  - HDFSProxy를 대체하기 위해 클라우데라에서 만들었으며, HTTP REST API로 구현되어 손쉽게 HDFS로 접근 할 수 있음 
+- zookeeper 
+  - 분산 애플리케이션을 위한 코디네이션 시스템. 분산 애플리케이션이 안정적인 서비스를 할 수 있도록 분산되어 있는 각 애플리케이션의 정보를 중앙에 집중하고 구성 관리, 그룹 관리 네이밍, 동기화 등의 서비스 제공 

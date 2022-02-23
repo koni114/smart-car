@@ -22,7 +22,7 @@
 
 ### 플럼 아키텍처
 
-![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_12.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_12_1.png)
 
 - Flume 은 Source와 Sink로 구성되며, 이를 연결하는 channel로 구성
 - 아주 기본적인 Flume 의 데이터 파이프라인

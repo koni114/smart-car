@@ -1,5 +1,5 @@
 ## 스마트카 로그 시뮬레이터
-### 로크 시뮬레이터 설치
+### 로그 시뮬레이터 설치
 1. Server02 에 root 계정으로 로그인해 다음 명령을 실행
 - `cd /home`  
   `mkdir /home/pilot-pjt`  
@@ -29,6 +29,7 @@
   - 스마트카 운전자의 운행 정보를 실시간으로 발생시키는 DriverLogMain.java 
   - 스마트카의 상태 정보를 주기적으로 발생시키는 CarLoginMain.java 
 - DriverLogMain.java 실행  
+  - 실시간으로 발생하는 데이터 
   - PuTTY 프로그램 실행
   - Server02에 root 계정으로 SSH 접속
   - `cd /home/pilot-pjt/working`
@@ -46,9 +47,14 @@
 9. Server02에 SSH 세션을 하나 더 열어 로그 시뮬레이터 정상 확인  
   `cd /home/pilot-pjt/working/SmartCar`  
   `tail -f SmartCarStatusInfo_20160101.txt`  
-- 스마트카 로그 시뮬레이터 실행시, 별도 옵션 적용 가능  
-  첫 번째 매개변수는 실행 날짜. 두 번째 매개변수는 스마트카 대수 매개변수  
-  두 번째 옵션인 스마트카 대수는 전체 성능에 영향을 미칠 수 있으니, 파일럿 PC의 성능에 맞춤  
+  - 자동차의 상태 정보를 24시간동안 실행된 로그를 시뮬레이션 해주는 것  
+    이 로그 생성 jar 는 24시간에 대한 로그만 생성하고 끝남   
+    하루 당 약 10MB 정도 저장
+10. 
+  - 앞에서 실행한 `CarLogMain.java` 프로그램을 Ctrl+C 키로 종료하거나 시뮬레이터의 pid를 찾아 강제로 종료
+11. 스마트카 로그 시뮬레이터 실행시, 별도 옵션 적용 가능  
+  - 첫 번째 매개변수는 실행 날짜. 두 번째 매개변수는 스마트카 대수 매개변수  
+  - 두 번째 옵션인 스마트카 대수는 전체 성능에 영향을 미칠 수 있으니, 파일럿 PC의 성능에 맞춤  
 
 ### 파일럿 환경 관리 - 파일럿 환경 시작 및 종료
 1. virtualBox 실행하면 가상 머신 관리자 창이 활성화됨
@@ -78,34 +84,48 @@
 - 빅데이터의 실제 하드웨어와 소프트웨어의 아키텍처 구성이 어떻게 되는지 알아보자
 - 15대 정도로 구성된 소규모 BigData 구성도 아키텍처 확인
 
-![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_10.png)
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_10_1.png)
 
-- 5대로 구성된 수집/적재 영역
+- 15대로 구성된 소규모 빅데이터 실환경
 - 3대로 구성된 하둡 클러스터의 관리 노드(NameNode, HBase Master.. 등이 2중 3중화 되어 있음)
+- 각 물리 서버 한대씩 Name Node(Active, standby) 가 있음
 - Ambari mgmt 가 Cloudera 와 동일한 역할을 수행함
 - 7대의 서버로 구성된 DataNode를 위해 있는 것. 여기에 BigData 가 저장
-  DataNode(HDFS), 관리를 위해 Node Manager가 있는 것임
-- 2대의 Nutch 와 Solr 를 통해 외부 분산 크롤링
+  DataNode(HDFS) 관리를 위해 Node Manager가 있는 것임
+- 2대의 Nutch 와 Solr 를 통해 외부 분산 크롤링을 배치  
+  pilot project 에서는 크롤링을 수행하지는 않음  
+  크롤링된 데이터를 저장하고 인덱싱하기 위해 Nutch와 Solr를 배치함
 
-![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_11.png)
 
-- 하나의 렉 서버 안에 서버들을 모두 다 꽂아놓고, server 10대 배치
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_10.png)
+
+- 위의 15대로 구성된 소프트웨어 아키텍처는 위와 같은 H/W 아키텍처로 구성될 수 있음
+- 하나의 렉 서버 안에 서버들을 모두 다 꽂아놓고, x86 장비 server 10대 배치
 - 통신을 위한 네트워크 스위치 10G 배치(Public/Private)
 - 필요하다면 렉을 확장할 수 있음
 - 3대의 렉까지 확장할 수 있으며, 개발환경을 가상환경으로 구성해 놓기도 함
 - 수집/크롤링 시스템은 물리적 네트워크 존이 다른데 있음
 - 기존에 있던 ETL Tool과 연결도 되며, Web/WAS 처럼 업무 시스템과도 연결됨
 
-![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_12.png)
 
 #### 중간급 규모의 아키텍처
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_11.png)
+
 - Data Node가 빅데이터 시스템의 규모를 나타낸다라고 볼 수 있음
 - 20대의 DataNode가 있음(물리적 서버)
-- Tez도 Ambari 계열로 보임
+- Tez인거보니 Ambari 계열로 보임
 - 수집영역은 랜딩 영역 또는 엣지영역으로 부르기도 함  
 - Queue 노드 1번부터 3번까지 3대의 서버로 구성
-- 네트워크는 10G망으로 구성된 것이 중요한데, 그 이유는 데이터의 네트워크가 많이 일어나기 때문
-- <b>하나의 랙이 추가될 때마다 data spread 되는 overhead는 발생하나, 하둡의 가장 큰 장점이 노드 확장성임!</b>
+- 네트워크는 10G망으로 구성된 것이 중요한데, 그 이유는 노드들간의 데이터의 네트워크가 많이 일어나기 때문
+
+#### Rack 구성
+![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_12.png)
+
+- rack을 확장할 때마다, 3V(Variety, Velocity, Volume)을 보장
+- bigdata ecosystem은 rack-balancing이 자동으로 이루어지게끔 되어 있음
+- <b>하나의 랙이 추가될 때마다 순간적으로 data spread 되는 overhead는 발생하나, 하둡의 가장 큰 장점이 노드 확장성임!</b>
+- 빅데이터 시스템의 아키텍처가 정해진 것은 없음. 그 이유는 빅데이터 시스템만 구축되는 경우는 없기 때문
+
 
 ## 용어
 - 심볼릭 링크

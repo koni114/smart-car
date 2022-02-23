@@ -10,10 +10,12 @@
   - chrome : hadoop eco system을 설치하고 Web에서 수행을 시키려고 할 때, 반드시 chrome 필요
 - 소스코드 다운로드: https://github.com/wikibook/bigdata2nd/archive/master.zip
 
+
 ### 빅데이터 서버 환경 구성
 - 개인 PC 위의 리눅스 가상 머신 3대
 - 클라우데라 매니저 설치
 - 빅데이터 에코시스템 설치: Hadoop, Zookeeper 등 기본 구성
+
 
 ### 빅데이터 파일럿 프로젝트 PC 환경 구성
 - 자바 설치
@@ -343,7 +345,6 @@ $ hostname
   Puppet, Ansible, Chef, Ambari, Cloudera Manager, BigTop 등
 - 호튼웍스의 Ambari, 클라우데라의 CM은 좀 더 상위 수준의 빅데이터 전용 설치/환경 구성 툴로서 빅데이터 소프트웨어들을 웹 GUI 환경에서 쉽게 활용할 수 있게 지원함
 - 파일럿 프로젝트에서는 클라우데라의 CM을 이용
-
 
 
 ## 용어 정리
