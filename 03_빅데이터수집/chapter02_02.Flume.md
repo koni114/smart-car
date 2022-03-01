@@ -16,7 +16,7 @@
   - Source -> (Interceptor) -> Channel -> Sink 컴포넌트 순으로 구성된 작업 단위로 독립된 인스턴스로 생성  
 - 원천에서 데이터를 수집하는 컴포넌트가 Source이고, 하둡에 적재하는 컴포넌트가 Sink
 - Sink 컴포넌트는 주로 하둡 컴포넌트를 이용할 것이고, Source 컴포넌트는 File 컴포넌트를 사용
-- Channel 는 Sink 와 Channel 사이에 연결하는 역할 수행
+- Channel 는 Source 와 Sink 사이에 연결하는 역할 수행
 - Agent는 모든 것들을 총칭해서 Agent 라고 함. 즉 Source, Sink, Channel, Interceptor 를 총칭해서 agent 라고 함
 - 유사 프로젝트는 Flunted, Scribe, logstash, Chukwa, NiFi, Embulk 등이 있음
 
@@ -53,3 +53,15 @@
 ![img](https://github.com/koni114/smart-car/blob/master/img/smart_car_17.png)
 - 플럼 활용 방안2
 - 발생한 순간 바로 수집.(실시간 분석 활용)
+
+## 용어 정리
+- 인스턴스
+  - 객체 지향 프로그래밍(OOP)에서 인스턴스(instance)는 해당 클래스의 구조로 컴퓨터 저장공간에서 할당된 실체를 의미
+  - 여기서 클래스는 속성과 행위로 구성된 일종의 설계도 
+- Agent
+  - 특정 목적에 대해 사용자를 대신하여 작업을 수행하는 자율적 프로세스
+  - 독자적으로 존재하지 않고 어떤 환경(운영체제, 네트워크)의 일부이거나 그 안에서 동작하는 시스템
+  - 지식 기반(knowledge base)과 추론 기능을 가지며, 자원 또는 다른 에이전트와의 정보 교환과 통신을 통해 문제를 해결
+  - Agent는 스스로 환경의 변화를 인지하고, 그에 대응하는 행동을 취하며, 경험을 바탕으로 학습하는 기능을 가짐 
+- Agent vs daemon
+  - 사용자 입력 여부에 의해 구분할 수 있는데, daemon은 사용자의 입력 없이 백그라운드에서 작업을 수행하며 에이전트는 사용자의 입력이나 사용자가 주어진 목적을 달성하기 위해 수행 
